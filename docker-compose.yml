@@ -15,5 +15,4 @@ services:
       - "8002:8000"
     networks:
       - labnet
-    networks:
-      labnet:
+ 
