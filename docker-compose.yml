@@ -1,6 +1,6 @@
 services:
   service_a:
-    image: ghcr.io/liamnooneatu/cicd2_lab6b/service_a:latest
+    image: ghcr.io/liamnooneatu/cicd2_lab6/service_a:latest
     ports:
       - "8001:8000"
     networks:
