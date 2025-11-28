@@ -1,36 +1,19 @@
-name: Build & Push Image
+services:
+  service_a:
+    image: ghcr.io/liamnooneatu/cicd2_lab6b/service_a:latest
+    ports:
+      - "8001:8000"
+    networks:
+      - labnet
 
-on:
-  push:
-    branches: [ master ]
-  workflow_dispatch:
-
-jobs:
-  docker:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set image name
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}/service_a" >> $GITHUB_ENV
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and Push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
+  service_b:
+    image: ghcr.io/<liamnooneatu>/cicd2_lab6b/service_b:latest
+    env_file: ./.env
+    depends_on:
+      - service_a
+    ports:
+      - "8002:8000"
+    networks:
+      - labnet
+    networks:
+      labnet:
